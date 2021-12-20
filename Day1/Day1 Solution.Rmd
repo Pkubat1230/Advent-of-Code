@@ -1,0 +1,35 @@
+---
+title: "Advent of Code Day 1"
+author: "Paul Kubat"
+date: "12/20/2021"
+output: html_document
+---
+
+
+```{r}
+library(readr)
+myFile = "https://raw.githubusercontent.com/Pkubat1230/Advent-of-Code/main/Day1/Day1%20Data?token=AW7YXEHSKU7CB5PAZMXFUATBYDGWE"
+
+Day1 <- read.csv(myFile,header = FALSE)
+colnames(Day1) <- c('Value')
+```
+
+```{r}
+counter <- 0
+for(i in 2:nrow(Day1)) {
+  if(Day1[i-1,1]<Day1[i,1])
+    counter = counter + 1
+}
+print(counter)
+
+```
+
+```{r}
+counter <- 0
+for(i in 2:1997) {
+  if(Day1[i,1]+Day1[i+1,1]+Day1[i+2,1] < Day1[i+1,1]+Day1[i+2,1]+Day1[i+3,1])
+    counter = counter + 1
+}
+print(counter)
+
+```
