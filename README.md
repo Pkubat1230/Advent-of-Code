@@ -2,4 +2,4 @@
 My Solutions to Advent of Code 2021
 | Language | Count of Days|Labels|
 | --- | --- | --- |
-| `R` | 0 | 0 |
+| `R` | 1 | 1 |
