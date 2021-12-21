@@ -1,0 +1,99 @@
+---
+title: "Advent of Code Day 3"
+author: "Paul Kubat"
+date: "12/20/2021"
+output: html_document
+---
+
+
+```{r}
+library(readr)
+library(dplyr)
+library(tidyr)
+myFile = "https://raw.githubusercontent.com/Pkubat1230/Advent-of-Code/main/Day3/Day3%20Data?token=AW7YXEGJOGTOHGO5QTZ4YPTBYISPM"
+
+Day3 <- read.csv(myFile,header = FALSE,colClasses = "character")
+colnames(Day3) <- c('BinaryCode')
+```
+
+```{r}
+#Part 1
+Gamma <- ""
+Epsilon <- ""
+
+for (q in 1:12) {
+  if(names(sort(table(substr(Day3$BinaryCode,q,q)),decreasing=TRUE)[1])=="0"){
+    Gamma <- paste(Gamma,"0",sep = "")
+    Epsilon <- paste(Epsilon,"1",sep = "")
+}
+  if(names(sort(table(substr(Day3$BinaryCode,q,q)),decreasing=TRUE)[1])=="1"){
+    Gamma <- paste(Gamma,"1",sep = "")
+    Epsilon <- paste(Epsilon,"0",sep = "")
+  }
+}
+print(strtoi(Gamma,2)*strtoi(Epsilon,2))
+```
+
+```{r}
+#Part 2
+#Oxygen is most common, CO2 is least common
+library(tidyverse)
+
+OxygenGeneratorRating <- Day3
+CO2ScrubberRating <- Day3
+
+zeroCounter <- 0
+oneCounter <- 0
+
+for(z in 1:12){
+for (i in 1:nrow(OxygenGeneratorRating)) {
+  if(substr(OxygenGeneratorRating[i,1],z,z)=="0"){
+    zeroCounter = zeroCounter + 1
+  }else{
+    oneCounter = oneCounter + 1
+  }
+}
+  if(oneCounter >= zeroCounter){
+    OxygenGeneratorRating <- OxygenGeneratorRating %>%
+      filter(substr(OxygenGeneratorRating$BinaryCode,z,z) =="1")
+    }else{
+      OxygenGeneratorRating <- OxygenGeneratorRating %>%
+      filter(substr(OxygenGeneratorRating$BinaryCode,z,z) =="0")
+    }
+  oneCounter = 0
+  zeroCounter = 0
+  if(nrow(OxygenGeneratorRating) == 1){
+    break
+  }
+}
+
+for(z in 1:12){
+for (i in 1:nrow(CO2ScrubberRating)) {
+  if(substr(CO2ScrubberRating[i,1],z,z)=="0"){
+    zeroCounter = zeroCounter + 1
+  }else{
+    oneCounter = oneCounter + 1
+  }
+}
+  if(zeroCounter <= oneCounter){
+    CO2ScrubberRating <- CO2ScrubberRating %>%
+      filter(substr(CO2ScrubberRating$BinaryCode,z,z) =="0")
+    }else{
+      CO2ScrubberRating <- CO2ScrubberRating %>%
+      filter(substr(CO2ScrubberRating$BinaryCode,z,z) =="1")
+    }
+  oneCounter = 0
+  zeroCounter = 0
+  if(nrow(CO2ScrubberRating) == 1){
+    break
+  }
+}
+C02Rating <- strtoi(as.numeric(CO2ScrubberRating$BinaryCode),base = 2)
+OxygenRating <- strtoi(as.numeric(OxygenGeneratorRating$BinaryCode),base = 2)
+print(C02Rating * OxygenRating)
+
+```
+
+
+
+
